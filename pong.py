@@ -1,6 +1,18 @@
 # Import module
 import turtle
-import winsound
+import numpy as np
+import simpleaudio as sa
+
+def sound(x, z):
+	frequency = x
+	fs = 44100
+	seconds = z
+	t = np.linspace(0, seconds, seconds * fs, False)
+	note = np.sin(frequency * t * 2 * np.pi)
+	audio = note * (2**15 - 1) / np.max(np.abs(note))
+	audio = audio.astype(np.int16)
+	play_obj = sa.play_buffer(audio, 1, 2, fs)
+	play_obj.wait_done()
 
 win = turtle.Screen()
 win.title("Pong by Kaone")
@@ -8,8 +20,6 @@ win.bgcolor("black")
 win.setup(width=800, height=600)
 
 win.tracer(0)
-
-
 
 # Add 1st Paddle
 paddle_a = turtle.Turtle()
@@ -35,7 +45,7 @@ ball.speed(0)
 ball.shape("circle")
 ball.color("white")
 ball.penup()
-ball.goto(0,0)
+ball.goto(0, 0)
 ball.dx = 2
 ball.dy = -2
 
@@ -48,7 +58,7 @@ pen.hideturtle()
 pen.goto(0, 250)
 pen.write("Player 1 = 0, Player 2 = 0", align="center", font=("Courier", 14, "bold"))
 
-#Generate scores
+# Generate scores
 score1 = 0
 score2 = 0
 
@@ -81,8 +91,7 @@ win.onkeypress(paddle_a_down, "s")
 win.onkeypress(paddle_b_up, "Up")
 win.onkeypress(paddle_b_down, "Down")
 
-
-#Loop through the game
+# Loop through the game
 while True:
     win.update()
 
@@ -90,7 +99,7 @@ while True:
     ball.sety(ball.ycor() + ball.dy)
 
     # Conditions for when the ball hits the border
-    #if ball.xcor
+    # if ball.xcor
     if ball.ycor() > 290:
         ball.sety(290)
         ball.dy *= -1
@@ -105,7 +114,7 @@ while True:
         score1 += 1
         pen.clear()
         pen.write("Player 1 = %s, Player 2 = %s" % (score1, score2), align="center", font=("Courier", 14, "bold"))
-        winsound.PlaySound("ding.wav", winsound.SND_ASYNC)
+
         
 
     if ball.xcor() < -390:
@@ -114,20 +123,23 @@ while True:
         score2 += 1
         pen.clear()
         pen.write("Player 1 = %s, Player 2 = %s" % (score1, score2), align="center", font=("Courier", 14, "bold"))
-        winsound.PlaySound("ding.wav", winsound.SND_ASYNC)
 
 
-    # To make the ball bounce on the paddle
+
+# To make the ball bounce on the paddle
     if (ball.xcor() > 350 and ball.xcor() < 355) and (ball.ycor() < paddle_b.ycor() + 55 and ball.ycor() > paddle_b.ycor() - 55):
         ball.setx(350)
         ball.dx *= -1
-        winsound.PlaySound("swoosh.wav", winsound.SND_ASYNC)
+
 
     if (ball.xcor() < -350 and ball.xcor() > -355) and (ball.ycor() < paddle_a.ycor() + 55 and ball.ycor() > paddle_a.ycor() - 55):
         ball.setx(-350)
         ball.dx *= -1
-        winsound.PlaySound("swoosh.wav", winsound.SND_ASYNC)
+            
+
 
 # Improving the Game
-#Include sound effect -- sound.wave
-#Include Pause option in game
+# Include sound effect -- sound.wave
+# Include Pause option in game
+# sudo apt-get install -y python3-dev libasound2-dev
+# pip3 install simplesound
