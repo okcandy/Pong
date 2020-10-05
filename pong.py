@@ -3,13 +3,11 @@ import turtle
 import winsound
 
 win = turtle.Screen()
+win.setup(width=1.0, height=1.0, startx=None, starty=None)
 win.title("Pong by Kaone")
 win.bgcolor("black")
-win.setup(width=800, height=600)
 
 win.tracer(0)
-
-
 
 # Add 1st Paddle
 paddle_a = turtle.Turtle()
